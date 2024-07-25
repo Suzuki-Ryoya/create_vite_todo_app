@@ -1,3 +1,8 @@
+import { Card, Icon, TextField } from "@mui/material";
+import { styled } from "@mui/material/styles";
+
+import { pink, grey, lightBlue } from "@mui/material/colors";
+
 type Props = {
   todos: Todo[];
   filter: Filter;
@@ -24,12 +29,95 @@ export const TodoItem = ({ todos, filter, onTodo }: Props) => {
     }
   });
 
+  const Container = styled("div")({
+    margin: "0 auto",
+    maxWidth: "640px",
+    fontFamily: "-apple-system, BlinkMacSystemFont, Roboto,sans-serif",
+  });
+
+  const TodoCard = styled(Card)(({ theme }) => ({
+    marginTop: theme.spacing(1),
+    marginLeft: theme.spacing(2),
+    marginRight: theme.spacing(2),
+    padding: theme.spacing(1),
+    fontFamily: "-apple-system, BlinkMacSystemFont, Roboto, sans-serif",
+  }));
+
+  const Form = styled("div")(({ theme }) => ({
+    marginTop: theme.spacing(1),
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    fontSize: "16px",
+  }));
+
+  const ButtonContainer = styled("div")(({ theme }) => ({
+    marginTop: theme.spacing(1),
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  }));
+
+  const Button = styled("button")(({ theme }) => ({
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    background: "none",
+    border: "none",
+    cursor: "pointer",
+    outline: "none",
+  }));
+
+  const Trash = styled("button")(({ theme }) => ({
+    background: "none",
+    border: "none",
+    cursor: "pointer",
+    outline: "none",
+  }));
+
   return (
-    <ul>
+    <Container>
       {filterTodos.map((todo) => {
         // リストの場合はkeyプロパティがないと一意な要素を特定できない
         return (
-          <li key={todo.id}>
+          <TodoCard key={todo.id}>
+            <Form>
+              <TextField
+                aria-label={`todo-${todo.value}`}
+                fullWidth
+                variant="standard"
+                value={todo.value}
+                onChange={(e) => onTodo(todo.id, "value", e.target.value)}
+                disabled={todo.checked || todo.removed}
+              ></TextField>
+            </Form>
+            <ButtonContainer>
+              <Button
+                aria-label={`todo-check-${todo.value}`}
+                onClick={() => onTodo(todo.id, "checked", !todo.checked)}
+                disabled={filter === "removed"}
+              >
+                {todo.checked ? (
+                  <Icon
+                    aria-label={`todo-removed-${todo.value}`}
+                    style={{
+                      color: filter !== "removed" ? pink.A200 : grey[500],
+                    }}
+                  >
+                    check_circle_outline
+                  </Icon>
+                ) : (
+                  <Icon
+                    aria-label={`todo-uncheck-${todo.value}`}
+                    style={{
+                      color: filter !== "removed" ? lightBlue[500] : grey[500],
+                    }}
+                  >
+                    radio_button_unchecked
+                  </Icon>
+                )}
+              </Button>
+            </ButtonContainer>
             <input
               type="checkbox"
               checked={todo.checked}
@@ -46,9 +134,9 @@ export const TodoItem = ({ todos, filter, onTodo }: Props) => {
             <button onClick={() => onTodo(todo.id, "removed", !todo.removed)}>
               {todo.removed ? "復元" : "削除"}
             </button>
-          </li>
+          </TodoCard>
         );
       })}
-    </ul>
+    </Container>
   );
 };

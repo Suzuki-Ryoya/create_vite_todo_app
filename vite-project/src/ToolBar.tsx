@@ -9,6 +9,7 @@ import {
 
 type Props = {
   filter: Filter;
+  onToggleDrawer: () => void;
 };
 
 const translator = (arg: Filter) => {
@@ -24,7 +25,7 @@ const translator = (arg: Filter) => {
   }
 };
 
-export const ToolBar = ({ filter }: Props) => (
+export const ToolBar = ({ filter, onToggleDrawer }: Props) => (
   <Box sx={{ flex: 1 }}>
     <AppBar position="static">
       <Toolbar>
@@ -34,6 +35,7 @@ export const ToolBar = ({ filter }: Props) => (
           edge="start"
           color="inherit"
           sx={{ mr: 2 }}
+          onClick={onToggleDrawer}
         >
           <Icon>menu</Icon>
         </IconButton>
