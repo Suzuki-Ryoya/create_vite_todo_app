@@ -29,7 +29,14 @@ export const AlertDialog = ({ alertOpen, onEmpty, onToggleAlert }: Props) => (
       <Button aria-label="alert-cancel" onClick={onToggleAlert} color="primary">
         キャンセル
       </Button>
-      <Button aria-label="alert-ok" onClick={onEmpty} color="primary">
+      <Button
+        aria-label="alert-ok"
+        onClick={() => {
+          onToggleAlert();
+          onEmpty();
+        }}
+        color="primary"
+      >
         OK
       </Button>
     </DialogActions>

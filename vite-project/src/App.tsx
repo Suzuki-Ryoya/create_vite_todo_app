@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import { FormDialog } from "./FormDialog";
 import { ActionButton } from "./ActionButton";
@@ -9,6 +9,7 @@ import { GlobalStyles, ThemeProvider, createTheme } from "@mui/material";
 import { indigo, pink } from "@mui/material/colors";
 import { QR } from "./QR";
 import { AlertDialog } from "./AlertDialog";
+import localforage from "localforage";
 
 // typeは型に名前をつけることができる(型エイリアスと呼ぶ)
 // オブジェクトの型を定義(interfaceに似ているがtypeは継承できない)
@@ -38,6 +39,16 @@ const App = () => {
   const [qrOpen, setQrOpen] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
+
+  useEffect(() => {
+    localforage
+      .getItem("todo-20200101")
+      .then((values) => setTodos(values as Todo[]));
+  }, []);
+
+  useEffect(() => {
+    localforage.setItem("todo-20200101", todos);
+  }, [todos]);
 
   const handleSubmit = () => {
     if (!text) {

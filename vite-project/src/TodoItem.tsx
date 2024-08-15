@@ -1,4 +1,4 @@
-import { Card, Icon, TextField } from "@mui/material";
+import { Card, Icon, TextField, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 import { pink, grey, lightBlue } from "@mui/material/colors";
@@ -57,7 +57,7 @@ export const TodoItem = ({ todos, filter, onTodo }: Props) => {
     justifyContent: "space-between",
   }));
 
-  const Button = styled("button")(({ theme }) => ({
+  const Button = styled("button")(() => ({
     display: "flex",
     flexDirection: "row",
     justifyContent: "center",
@@ -68,7 +68,7 @@ export const TodoItem = ({ todos, filter, onTodo }: Props) => {
     outline: "none",
   }));
 
-  const Trash = styled("button")(({ theme }) => ({
+  const Trash = styled("button")(() => ({
     background: "none",
     border: "none",
     cursor: "pointer",
@@ -116,24 +116,39 @@ export const TodoItem = ({ todos, filter, onTodo }: Props) => {
                     radio_button_unchecked
                   </Icon>
                 )}
+                <Typography
+                  style={{
+                    userSelect: "none",
+                    color:
+                      todo.checked && filter !== "removed"
+                        ? pink.A200
+                        : grey[500],
+                  }}
+                >
+                  Done
+                </Typography>
               </Button>
+              <Trash
+                aria-label={`todo-trash-${todo.value}`}
+                onClick={() => onTodo(todo.id, "removed", !todo.removed)}
+              >
+                {todo.removed ? (
+                  <Icon
+                    aria-label={`todo-undo-${todo.value}`}
+                    style={{ color: lightBlue[500] }}
+                  >
+                    undo
+                  </Icon>
+                ) : (
+                  <Icon
+                    aria-label={`todo-undo-${todo.value}`}
+                    style={{ color: grey[500] }}
+                  >
+                    delete
+                  </Icon>
+                )}
+              </Trash>
             </ButtonContainer>
-            <input
-              type="checkbox"
-              checked={todo.checked}
-              disabled={todo.removed}
-              // チェックボックスの値が変更されたときに呼び出される→だからboolean値の反転してる
-              onChange={() => onTodo(todo.id, "checked", !todo.checked)}
-            ></input>
-            <input
-              type="text"
-              value={todo.value}
-              disabled={todo.checked || todo.removed}
-              onChange={(e) => onTodo(todo.id, "value", e.target.value)}
-            ></input>
-            <button onClick={() => onTodo(todo.id, "removed", !todo.removed)}>
-              {todo.removed ? "復元" : "削除"}
-            </button>
           </TodoCard>
         );
       })}

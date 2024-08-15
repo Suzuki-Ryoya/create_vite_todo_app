@@ -11,8 +11,8 @@ type Props = {
 };
 const FabButton = styled(Fab)({
   position: "fixed",
-  bottom: "15",
-  right: "15",
+  bottom: 15,
+  right: 15,
 });
 export const ActionButton = ({
   todos,
