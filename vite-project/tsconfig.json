@@ -1,6 +1,6 @@
 {
   "include": ["src", "node_modules/vite-plugin-pwa/client.d.ts"],
-  "references": [],
+  "references": [{ "path": "./tsconfig.node.json" }],
   "compilerOptions": {
     "target": "ESNext",
     "useDefineForClassFields": true,
